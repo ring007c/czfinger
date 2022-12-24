@@ -23,15 +23,11 @@ func main() {
 		//timeout    = app.IntOpt("t timeout", 20, "timeout ")
 	)
 	app.Version("v version", "czfinger 1.0")
-	app.Spec = "-v | (-u=<target> ) | (--tf=<targetfile> )| (-t=<threads> )"
+	app.Spec = "-v | (-u=<target> ) | (--tf=<targetfile> )... (-t=<threads> )"
 	app.Action = func() {
 		targetsSlice := make([]string, 0) //创建一个目标地址切片
 		if len(*target) != 0 {
 			targetsSlice = append(targetsSlice, *target)
-			text := core.Reqdata(*target)
-			core.Detect(text)
-			//fmt.Println(strings.ToLower(string(text.Content)))
-			//fmt.Println(text.Url)
 		}
 		if *threads > len(targetsSlice) {
 			*threads = len(targetsSlice)
@@ -47,18 +43,16 @@ func main() {
 				}
 
 				targetsSlice = append(targetsSlice, lineSlice...)
-				//fmt.Println(targetsSlice)
-				//fmt.Println("文件存在")
 
 			}
 
 		}
-
+		//没数据为0退出
 		if len(targetsSlice) == 0 {
 			utils.OptionsError("No target targetsSlice", 2)
 		}
+		//去重
 		targetsSlice = utils.RemoveRepeatedElement(targetsSlice)
-		//fmt.Println(targetsSlice)
 		for i := 0; i < len(targetsSlice); i++ {
 			swg.Add()
 			// 开启一个并发
