@@ -3,16 +3,20 @@ package structs
 import "net/http"
 
 // 参考byro07/fwhatweb
-type FofaFingerPrint struct {
-	Rule_id         string   `json:"rule_id"`
-	Level           string   `json:"level"`
-	Softhard        string   `json:"softhard"`
-	Product         string   `json:"product"`
-	Company         string   `json:"company"`
-	Category        string   `json:"Category"`
-	Parent_category string   `json:"parent_category"`
-	Rules           [][]Rule `json:"rules"`
+type FofaFinger struct {
+	RuleID         string `json:"rule_id"`
+	Level          string `json:"level"`
+	Softhard       string `json:"softhard"`
+	Product        string `json:"product"`
+	Company        string `json:"company"`
+	Category       string `json:"category"`
+	ParentCategory string `json:"parent_category"`
+	Rules          [][]struct {
+		Match   string `json:"match"`
+		Content string `json:"content"`
+	} `json:"rules"`
 }
+
 type Rule struct {
 	Match   string
 	Content string
